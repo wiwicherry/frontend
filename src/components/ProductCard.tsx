@@ -26,7 +26,7 @@ const ProductCard = ({ product }: { product: Product }) => (
           </p>
         )}
         <h3 className="font-heading text-base font-medium text-foreground">{product.name}</h3>
-        <p className="mt-1 text-sm text-accent font-semibold">${product.price?.toFixed(2)}</p>
+        <p className="mt-1 text-sm text-accent font-semibold">₹{product.price?.toFixed(2)}</p>
       </CardContent>
     </Card>
   </Link>

@@ -68,7 +68,7 @@ const PlaceOrder = () => {
                   <img src={item.image} alt={item.name} className="h-12 w-12 rounded object-cover" />
                   <span>{item.name}</span>
                 </div>
-                <span>{item.qty} × ${item.price.toFixed(2)} = ${(item.qty * item.price).toFixed(2)}</span>
+                <span>{item.qty} × ₹{item.price.toFixed(2)} = ₹{(item.qty * item.price).toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -76,11 +76,11 @@ const PlaceOrder = () => {
 
         <div className="rounded-lg border bg-card p-6 space-y-2 text-sm">
           <h2 className="font-heading text-lg font-medium mb-2">Price Summary</h2>
-          <div className="flex justify-between"><span className="text-muted-foreground">Items</span><span>${itemsPrice.toFixed(2)}</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span>${shippingPrice.toFixed(2)}</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Tax (15%)</span><span>${taxPrice.toFixed(2)}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Items</span><span>₹{itemsPrice.toFixed(2)}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span>₹{shippingPrice.toFixed(2)}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Tax (15%)</span><span>₹{taxPrice.toFixed(2)}</span></div>
           <hr className="my-2" />
-          <div className="flex justify-between font-semibold text-base"><span>Total</span><span>${totalPrice.toFixed(2)}</span></div>
+          <div className="flex justify-between font-semibold text-base"><span>Total</span><span>₹{totalPrice.toFixed(2)}</span></div>
         </div>
 
         <Button onClick={handlePlaceOrder} className="w-full" size="lg" disabled={loading || cartItems.length === 0}>

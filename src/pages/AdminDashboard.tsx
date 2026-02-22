@@ -116,7 +116,7 @@ const AdminDashboard = () => {
               <h2 className="font-heading text-xl font-medium mb-4">Create Product</h2>
               <form onSubmit={handleCreateProduct} className="space-y-3">
                 <div><Label>Name</Label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required /></div>
-                <div><Label>Price ($)</Label><Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required /></div>
+                <div><Label>Price (₹)</Label><Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required /></div>
                 <div>
                   <Label>Category</Label>
                   <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
@@ -141,7 +141,7 @@ const AdminDashboard = () => {
                     {imageUrl && <img src={imageUrl} alt="Preview" className="h-12 w-12 rounded object-cover" />}
                   </div>
                 </div>
-                <Button type="submit" className="w-full" disabled={creating}>
+                <Button type="submit" className="w-full bg-[#E5989B] hover:bg-[#D49A89] text-white" disabled={creating}>
                   {creating ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Creating...</> : "Create Product"}
                 </Button>
               </form>
@@ -164,7 +164,7 @@ const AdminDashboard = () => {
                     {products.map((p) => (
                       <TableRow key={p._id}>
                         <TableCell className="font-medium">{p.name}</TableCell>
-                        <TableCell>${p.price?.toFixed(2)}</TableCell>
+                        <TableCell>₹{p.price?.toFixed(2)}</TableCell>
                         <TableCell>{p.category}</TableCell>
                         <TableCell>
                           <Button variant="ghost" size="icon" onClick={() => handleDeleteProduct(p._id)} className="text-destructive">
@@ -187,21 +187,42 @@ const AdminDashboard = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Order ID</TableHead>
-                  <TableHead>User</TableHead>
+                  <TableHead>Customer Info</TableHead>
+                  <TableHead>Shipping Address</TableHead>
                   <TableHead>Total</TableHead>
                   <TableHead>Paid</TableHead>
-                  <TableHead>Delivered</TableHead>
+                  <TableHead>Status</TableHead>
                   <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.map((o) => (
                   <TableRow key={o._id}>
-                    <TableCell className="font-mono text-xs">{o._id}</TableCell>
-                    <TableCell>{o.user?.name || "N/A"}</TableCell>
-                    <TableCell>${o.totalPrice?.toFixed(2)}</TableCell>
-                    <TableCell>{o.isPaid ? <span className="text-primary">Yes</span> : "No"}</TableCell>
-                    <TableCell>{o.isDelivered ? <span className="text-primary">Yes</span> : "No"}</TableCell>
+                    <TableCell className="font-mono text-xs">{o._id?.substring(18, 24)}</TableCell>
+                    
+                    {/* NEW: Customer Info Cell */}
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{o.user?.name || "N/A"}</span>
+                        <span className="text-xs text-muted-foreground">{o.user?.email || "No Email"}</span>
+                        <span className="text-xs text-muted-foreground">{o.user?.mobile || "No Mobile"}</span>
+                      </div>
+                    </TableCell>
+
+                    {/* NEW: Address Cell */}
+                    <TableCell className="max-w-[200px]">
+                      {o.shippingAddress ? (
+                        <div className="text-sm truncate" title={`${o.shippingAddress.address}, ${o.shippingAddress.city}, ${o.shippingAddress.postalCode}`}>
+                          {o.shippingAddress.address}, {o.shippingAddress.city}, {o.shippingAddress.postalCode}, {o.shippingAddress.country}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">No Address</span>
+                      )}
+                    </TableCell>
+
+                    <TableCell className="font-medium">₹{o.totalPrice?.toFixed(2)}</TableCell>
+                    <TableCell>{o.isPaid ? <span className="text-green-600 font-medium">Yes</span> : "No"}</TableCell>
+                    <TableCell>{o.isDelivered ? <span className="text-green-600 font-medium">Delivered</span> : "Processing"}</TableCell>
                     <TableCell>
                       {!o.isDelivered && (
                         <Button variant="outline" size="sm" onClick={() => handleMarkDelivered(o._id)} className="gap-1.5">

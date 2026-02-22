@@ -44,7 +44,7 @@ const CartPage = () => {
                   <Link to={`/product/${item._id}`} className="font-medium hover:text-primary transition-colors">
                     {item.name}
                   </Link>
-                  <p className="text-sm text-accent font-semibold">${item.price.toFixed(2)}</p>
+                  <p className="text-sm text-accent font-semibold">₹{item.price.toFixed(2)}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <Select value={String(item.qty)} onValueChange={(v) => updateQty(item._id, Number(v))}>
@@ -70,12 +70,12 @@ const CartPage = () => {
           <h2 className="font-heading text-xl font-semibold mb-4">Order Summary</h2>
           <div className="flex justify-between text-sm mb-2">
             <span className="text-muted-foreground">Items ({totalItems})</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
           <hr className="my-4" />
           <div className="flex justify-between font-semibold">
             <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
           <Button onClick={handleCheckout} className="w-full mt-6">
             Proceed to Checkout

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, type ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import api from "@/lib/api"; // Added to make backend calls
 
 export interface CartItem {
   _id: string;
@@ -23,6 +24,7 @@ interface CartContextType {
   removeFromCart: (id: string) => void;
   updateQty: (id: string, qty: number) => void;
   clearCart: () => void;
+  setCart: (items: CartItem[]) => void; // <-- NEW: To inject cart on login
   saveShippingAddress: (address: ShippingAddress) => void;
   totalItems: number;
 }
@@ -45,10 +47,34 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("cartItems", JSON.stringify(items));
   };
 
+  // --- NEW: Auto-save cart to database in the background ---
+  useEffect(() => {
+    const syncCart = async () => {
+      const userInfoStr = localStorage.getItem("userInfo");
+      if (userInfoStr) {
+        const userInfo = JSON.parse(userInfoStr);
+        if (userInfo && userInfo.token) {
+          try {
+            // We use the api instance, but explicitly pass the token just in case
+            await api.put('/users/cart', { cartItems }, {
+              headers: { Authorization: `Bearer ${userInfo.token}` }
+            });
+          } catch (error) {
+            console.error("Failed to sync cart to database");
+          }
+        }
+      }
+    };
+    
+    // Only run the sync if there's an actual change to prevent unnecessary API calls
+    syncCart();
+  }, [cartItems]);
+  // ---------------------------------------------------------
+
   const addToCart = (item: CartItem) => {
     const exists = cartItems.find((x) => x._id === item._id);
     const updated = exists
-      ? cartItems.map((x) => (x._id === item._id ? item : x))
+      ? cartItems.map((x) => (x._id === item._id ? { ...x, qty: x.qty + item.qty > x.countInStock ? x.countInStock : x.qty + item.qty } : x))
       : [...cartItems, item];
     persist(updated);
   };
@@ -74,7 +100,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, shippingAddress, addToCart, removeFromCart, updateQty, clearCart, saveShippingAddress, totalItems }}
+      value={{ 
+        cartItems, 
+        shippingAddress, 
+        addToCart, 
+        removeFromCart, 
+        updateQty, 
+        clearCart, 
+        setCart: persist, // <-- NEW: Expose persist as setCart
+        saveShippingAddress, 
+        totalItems 
+      }}
     >
       {children}
     </CartContext.Provider>

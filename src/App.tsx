@@ -18,6 +18,7 @@ import PlaceOrder from "./pages/PlaceOrder";
 import OrderDetails from "./pages/OrderDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy"; 
 
 const queryClient = new QueryClient();
 
@@ -28,7 +29,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Index />} />
@@ -41,6 +42,7 @@ const App = () => (
                 <Route path="/placeorder" element={<ProtectedRoute><PlaceOrder /></ProtectedRoute>} />
                 <Route path="/order/:id" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
                 <Route path="/admin/dashboard" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

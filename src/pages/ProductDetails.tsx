@@ -55,7 +55,7 @@ const ProductDetails = () => {
             <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">{product.category}</p>
           )}
           <h1 className="font-heading text-3xl font-semibold">{product.name}</h1>
-          <p className="mt-2 text-2xl font-semibold text-accent">${product.price?.toFixed(2)}</p>
+          <p className="mt-2 text-2xl font-semibold text-accent">₹{product.price?.toFixed(2)}</p>
           <p className="mt-4 text-muted-foreground leading-relaxed">{product.description}</p>
 
           <div className="mt-6">
