@@ -45,7 +45,7 @@ const PrivacyPolicy = () => {
           <h2 className="text-2xl font-semibold text-gray-900 mb-3">5. Contact Us</h2>
           <p>
             If you have any questions about this Privacy Policy, please contact us at: <br />
-            <a href="mailto:support@wiwiandcherry.com" className="text-[#E5989B] hover:underline font-medium">support@wiwiandcherry.com</a>
+            <a href="mailto:wiwicherry5@gmail.com" className="text-[#E5989B] hover:underline font-medium">wiwicherry5@gmail.com</a>
           </p>
         </section>
       </div>
