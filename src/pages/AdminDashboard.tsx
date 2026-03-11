@@ -161,7 +161,7 @@ const AdminDashboard = () => {
           <div className="grid lg:grid-cols-2 gap-10">
             
             {/* Form Section */}
-            <div className="rounded-lg border bg-card p-6 h-fit sticky top-24">
+            <div className="rounded-lg border bg-card p-6 h-fit lg:sticky lg:top-24 lg:z-10">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="font-heading text-xl font-medium">
                   {editingId ? "Edit Product" : "Create Product"}
