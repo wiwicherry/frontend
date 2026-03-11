@@ -33,7 +33,7 @@ const Navbar = () => {
             <Link to="/admin/dashboard">
               <Button variant="rose" size="sm" className="gap-1.5">
                 <Shield className="h-3.5 w-3.5" />
-                Admin
+                <span className="hidden sm:inline">Admin</span>
               </Button>
             </Link>
           )}
