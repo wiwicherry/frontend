@@ -52,7 +52,8 @@ const AdminDashboard = () => {
     
     setUploading(true);
     try {
-      const { data } = await api.post("/upload", formData, { headers: { "Content-Type": "multipart/form-data" } });
+      // const { data } = await api.post("/upload", formData, { headers: { "Content-Type": "multipart/form-data" } });
+      const { data } = await api.post("/upload", formData);
       // If editing, append new images to existing ones. If creating, just set them.
       setImageUrls((prev) => [...prev, ...data.images]); 
       toast({ title: "Images uploaded!" });
