@@ -34,7 +34,6 @@ const ProductCard = ({ product }: { product: Product }) => {
     <Link to={`/product/${product._id}`}>
       <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-md transition-shadow duration-300">
         
-        {/* Added 'relative' to this div so the arrows sit on top of the image */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <img
             src={images[currentIndex]}
@@ -42,26 +41,24 @@ const ProductCard = ({ product }: { product: Product }) => {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
 
-          {/* Only show arrows and dots if there are multiple images */}
           {images.length > 1 && (
             <>
-              {/* Left Arrow */}
+              {/* Left Arrow - Now visible on mobile, fades on desktop */}
               <button
                 onClick={prevImage}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-1.5 rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity shadow-sm z-10"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               
-              {/* Right Arrow */}
+              {/* Right Arrow - Now visible on mobile, fades on desktop */}
               <button
                 onClick={nextImage}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-1.5 rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity shadow-sm z-10"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
 
-              {/* Dots Indicator */}
               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                 {images.map((_, idx) => (
                   <div
@@ -76,7 +73,6 @@ const ProductCard = ({ product }: { product: Product }) => {
           )}
         </div>
 
-        {/* Your exact original CardContent styling */}
         <CardContent className="p-4 text-center">
           {product.category && (
             <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">

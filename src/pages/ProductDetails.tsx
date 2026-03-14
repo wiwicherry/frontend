@@ -14,10 +14,15 @@ const ProductDetails = () => {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
+  
+  // NEW: State to track the currently displayed large image
+  const [mainImage, setMainImage] = useState<string>("");
 
   useEffect(() => {
     api.get(`/products/${id}`).then((res) => {
       setProduct(res.data);
+      // Set the first image as the default main image when data loads
+      setMainImage(res.data.images?.[0] || "/placeholder.svg");
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [id]);
@@ -43,13 +48,37 @@ const ProductDetails = () => {
         <ArrowLeft className="h-4 w-4" /> Back
       </Button>
       <div className="grid md:grid-cols-2 gap-10">
-        <div className="aspect-square overflow-hidden rounded-lg bg-muted">
-          <img
-            src={product.images?.[0] || "/placeholder.svg"}
-            alt={product.name}
-            className="h-full w-full object-cover"
-          />
+        
+        {/* NEW: Image Gallery Section */}
+        <div className="flex flex-col gap-4">
+          {/* Main Large Image */}
+          <div className="aspect-square overflow-hidden rounded-lg bg-muted border">
+            <img
+              src={mainImage}
+              alt={product.name}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          
+          {/* Thumbnails Row (Only shows if there is more than 1 image) */}
+          {product.images && product.images.length > 1 && (
+            <div className="flex gap-3 overflow-x-auto pb-2 snap-x hide-scrollbar">
+              {product.images.map((img: string, index: number) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`${product.name} thumbnail ${index + 1}`}
+                  onClick={() => setMainImage(img)}
+                  className={`h-20 w-20 flex-shrink-0 rounded-md object-cover cursor-pointer snap-start transition-all border-2 ${
+                    mainImage === img ? "border-[#E5989B] opacity-100" : "border-transparent opacity-60 hover:opacity-100"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
+
+        {/* Product Info Section (Unchanged) */}
         <div className="flex flex-col justify-center">
           {product.category && (
             <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">{product.category}</p>

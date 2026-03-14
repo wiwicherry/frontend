@@ -6,6 +6,8 @@ export interface UserInfo {
   email: string;
   isAdmin: boolean;
   token: string;
+
+  mobile?: string;
 }
 
 interface AuthContextType {
